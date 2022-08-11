@@ -1,0 +1,39 @@
+<html>
+	<body>
+		<?php
+
+   include_once 'config.php';//connection
+if(isset($_POST['submit'])){
+	$fileCount=$_FILES['file']['name'];
+	$targetDir="images/";
+	$filename=implode(",",$fileCount);//this is the secret behind it
+	//print_r($fileCount);
+	
+	
+	if(!empty($fileCount)){
+	foreach($fileCount as $key=>$val){
+	$targetfilePath=$targetDir .$val;
+		move_uploaded_file($_FILES['file']['tmp_name'][$key],'images/'.$filename);
+	}}
+$sql="INSERT INTO images(img) VALUES ('$filename')";
+$check=mysqli_query($conn,$sql);
+if($check==TRUE){
+	echo "file uploaded succesfully ";
+	}
+	else
+	{ echo"ERROR";
+	}
+  
+}
+?>
+
+
+<form action="" method='POST' enctype="multipart/form-data">
+
+<label> select images</label>
+<input type="file" name="file[]" multiple><br/>
+<input type="submit" name="submit" value="UPLOAD">
+
+</form>
+</body>
+</html>
